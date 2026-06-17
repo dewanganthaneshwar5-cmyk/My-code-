@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <!-- Paper Sheet Gradient -->
+    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    <!-- Accent Sparkle Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#312e81" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background Card (Squircle) -->
+  <rect x="32" y="32" width="448" height="448" rx="120" ry="120" fill="url(#bgGrad)" />
+
+  <!-- Inner Glowing Edge -->
+  <rect x="34" y="34" width="444" height="444" rx="118" ry="118" fill="none" stroke="#818cf8" stroke-width="4" opacity="0.4" />
+
+  <!-- Sheet of Paper with Drop Shadow -->
+  <g filter="url(#shadow)">
+    <path d="M140 120 C 140 110, 150 100, 160 100 L 300 100 L 370 170 L 370 380 C 370 392, 360 402, 348 402 L 162 402 C 150 402, 140 392, 140 380 Z" fill="url(#paperGrad)" />
+  </g>
+
+  <!-- Folded Corner on Paper -->
+  <path d="M300 100 L 300 156 C 300 164, 306 170, 314 170 L 370 170 Z" fill="#cbd5e1" />
+
+  <!-- Sleek Text Lines on Paper -->
+  <rect x="180" y="180" width="140" height="12" rx="6" fill="#94a3b8" />
+  <rect x="180" y="220" width="140" height="12" rx="6" fill="#94a3b8" />
+  <rect x="180" y="260" width="100" height="12" rx="6" fill="#cbd5e1" />
+
+  <!-- Dynamic Creative Golden Pen/Stylus drawing a curve -->
+  <g transform="translate(40, -20)">
+    <!-- Golden Draw Stroke -->
+    <path d="M 240 360 C 290 360, 340 300, 310 240" fill="none" stroke="url(#goldGrad)" stroke-width="12" stroke-linecap="round" opacity="0.9" />
+    
+    <!-- Pen Body -->
+    <path d="M 330 150 L 350 130 C 358 122, 370 122, 378 130 L 390 142 C 398 150, 398 162, 390 170 L 370 190 Z" fill="#1e293b" />
+    <path d="M 300 240 L 330 150 L 370 190 L 280 260 Z" fill="#475569" />
+    
+    <!-- Pen Metal Ring (Golden Divider) -->
+    <path d="M 330 150 L 370 190" stroke="url(#goldGrad)" stroke-width="6" />
+
+    <!-- Pen Tip (Active Pen writing) -->
+    <path d="M 280 260 L 300 240 L 274 246 Z" fill="#0f172a" />
+  </g>
+
+  <!-- Sparkle Particle / Star on Top Right of Paper -->
+  <path d="M 380 220 L 385 235 L 400 235 L 388 245 L 393 260 L 380 250 L 367 260 L 372 245 L 360 235 L 375 235 Z" fill="url(#goldGrad)" />
+</svg>

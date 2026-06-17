@@ -1,0 +1,84 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Security Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // 3. Entity Validations (Pillar 2)
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidNote(data) {
+      return data.keys().hasAll(['title', 'content', 'type', 'color', 'userId', 'createdAt', 'updatedAt'])
+        && data.title is string && data.title.size() <= 500
+        && data.content is string && data.content.size() <= 1048576
+        && data.type in ['text', 'voice', 'drawing']
+        && data.color is string && data.color.size() <= 30
+        && data.userId is string && data.userId.size() <= 128
+        && data.createdAt is number
+        && data.updatedAt is number
+        && (!data.keys().contains('category') || data.category == null || (data.category is string && data.category.size() <= 100))
+        && (!data.keys().contains('isLocked') || data.isLocked is bool)
+        && (!data.keys().contains('isFavourite') || data.isFavourite is bool)
+        && (!data.keys().contains('pin') || data.pin == null || (data.pin is string && data.pin.size() <= 100))
+        && (!data.keys().contains('fontFamily') || data.fontFamily == null || (data.fontFamily is string && data.fontFamily.size() <= 100));
+    }
+
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['displayName', 'email'])
+        && data.displayName is string && data.displayName.size() <= 100
+        && data.email is string && data.email.size() <= 100
+        && (!data.keys().contains('photoURL') || data.photoURL == null || (data.photoURL is string && data.photoURL.size() <= 1000))
+        && (!data.keys().contains('theme') || data.theme == null || (data.theme in ['light', 'dark']))
+        && (!data.keys().contains('accentColor') || data.accentColor == null || (data.accentColor is string && data.accentColor.size() <= 30))
+        && (!data.keys().contains('baseFontSize') || data.baseFontSize == null || (data.baseFontSize is number));
+    }
+
+    // 4. Collection Rules
+    match /notes/{noteId} {
+      allow get, list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      
+      allow create: if isSignedIn() 
+        && isValidId(noteId)
+        && isValidNote(incoming())
+        && incoming().userId == request.auth.uid;
+        
+      allow update: if isSignedIn() 
+        && isValidId(noteId)
+        && isValidNote(incoming())
+        && resource.data.userId == request.auth.uid
+        && incoming().userId == request.auth.uid
+        && incoming().createdAt == resource.data.createdAt;
+        
+      allow delete: if isSignedIn() 
+        && resource.data.userId == request.auth.uid;
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidUserProfile(incoming());
+      allow update: if isSignedIn() && request.auth.uid == userId && isValidUserProfile(incoming()) 
+                    && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'photoURL', 'theme', 'accentColor', 'baseFontSize']);
+    }
+  }
+}

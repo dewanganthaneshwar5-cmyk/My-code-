@@ -1,0 +1,11 @@
+{
+  "apiKey": "AIzaSyCvvbK7UgLWs6NNLx9ZJCB6vXGM71EViDU",
+  "authDomain": "message-59592.firebaseapp.com",
+  "databaseURL": "https://message-59592-default-rtdb.asia-southeast1.firebasedatabase.app",
+  "projectId": "message-59592",
+  "storageBucket": "message-59592.firebasestorage.app",
+  "messagingSenderId": "33154876398",
+  "appId": "1:33154876398:web:1a1f11f80b41b55877c4ff",
+  "firestoreDatabaseId": "(default)",
+  "vapidKey": "BJPwVWjS9vqJTMpWhcJjjJqVTHmZa1feKugJW8k-ZXfwvJ6NE2aC_UyMm33r2Lfhyh0BBoJ1XB92tDR_eyzbzII"
+}
